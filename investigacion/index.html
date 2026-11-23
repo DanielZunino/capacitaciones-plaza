@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="es"><head><meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow,noarchive">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Investigación de Incidente - Constructora Plaza</title>
 <style>
@@ -186,6 +187,7 @@ footer{text-align:center;font-size:12px;color:#7a8794;padding:14px}
 <button class="b1" id="bpdf">Descargar PDF</button>
 <button class="b2" id="bjson">Guardar copia</button>
 <button class="b3" id="bload">Cargar copia</button>
+<button class="b3" id="bsal">Cerrar sesión</button>
 <input type="file" id="jin" accept=".json" style="display:none">
 </div>
 <footer>Integra Prevención SpA · Asesoría en Prevención de Riesgos</footer>
@@ -245,6 +247,7 @@ document.getElementById("fin").onchange=function(e){[].forEach.call(e.target.fil
  r.onload=function(){var im=new Image();im.onload=function(){var m=900,s=Math.min(1,m/Math.max(im.width,im.height)),cv=document.createElement("canvas");
   cv.width=im.width*s;cv.height=im.height*s;cv.getContext("2d").drawImage(im,0,0,cv.width,cv.height);
   fotos.push(cv.toDataURL("image/jpeg",.6));S.fotos=fotos;sv();drawFotos()};im.src=r.result};r.readAsDataURL(f)});e.target.value=""};
+document.getElementById("bsal").onclick=function(){try{localStorage.removeItem("plaza_u");localStorage.removeItem("plaza_c")}catch(e){}location.reload()};
 document.getElementById("bpdf").onclick=function(){window.print()};
 document.getElementById("bjson").onclick=function(){var a=document.createElement("a");
  a.href=URL.createObjectURL(new Blob([JSON.stringify(S)],{type:"application/json"}));a.download="Investigacion Incidente Plaza.json";a.click()};
@@ -255,12 +258,12 @@ ld();document.querySelectorAll("[data-k]").forEach(bind);fotos=S.fotos||[];rende
 
 async function cargar(u,c){if(!APPS_URL)throw new Error("sin-url");
  var r=await fetch(APPS_URL+"?u="+encodeURIComponent(u)+"&c="+encodeURIComponent(c));var j=await r.json();
- if(!j.ok)throw new Error("clave");NOM=j.n;nomInit();document.getElementById("login").style.display="none"}
+ if(j.bloqueado)throw new Error("bloqueado");if(!j.ok)throw new Error("clave");NOM=j.n;nomInit();document.getElementById("login").style.display="none"}
 async function entrar(){var m=document.getElementById("lm"),u=document.getElementById("lu").value.trim().toLowerCase(),c=document.getElementById("lc").value.trim();
  m.textContent="";if(!u||!c){m.textContent="Escriba su usuario y su clave";return}
  m.textContent="Ingresando...";
  try{await cargar(u,c);try{localStorage.setItem("plaza_u",u);localStorage.setItem("plaza_c",c)}catch(e){}}
- catch(e){m.textContent=e.message=="clave"?"Usuario o clave incorrectos":e.message=="sin-url"?"Falta conectar la nómina en línea":"No se pudo conectar. Revise su internet e intente de nuevo"}}
+ catch(e){m.textContent=e.message=="bloqueado"?"Demasiados intentos. Espere 15 minutos e intente de nuevo":e.message=="clave"?"Usuario o clave incorrectos":e.message=="sin-url"?"Falta conectar la nómina en línea":"No se pudo conectar. Revise su internet e intente de nuevo"}}
 document.getElementById("lb").onclick=entrar;document.getElementById("lc").onkeydown=function(e){if(e.key=="Enter")entrar()};
 (async function(){try{var u=localStorage.getItem("plaza_u"),c=localStorage.getItem("plaza_c");if(u&&c)await cargar(u,c)}catch(e){}})();
 </script></body></html>
