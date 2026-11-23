@@ -162,7 +162,7 @@ label.f textarea{min-height:120px;resize:vertical}
 <dialog id="lb"><div class="mh"><div id="lb-h" style="font-weight:700"></div><button class="x" data-close aria-label="Cerrar">×</button></div><img id="lb-img" alt=""><div class="mb meta" id="lb-cap"></div></dialog>
 <dialog id="ap">
   <form id="apf">
-    <div class="mh"><div><h3 style="font-size:18px">Subir información</h3><div class="meta" style="font-size:13px">Queda registrado en el expediente con tu nombre, la fecha y la hora.</div></div><button type="button" class="x" data-close aria-label="Cerrar">×</button></div>
+    <div class="mh"><div><h3 style="font-size:18px">Subir información</h3><div class="meta" style="font-size:13px">Queda registrado en el expediente con su nombre, la fecha y la hora.</div></div><button type="button" class="x" data-close aria-label="Cerrar">×</button></div>
     <div class="mb">
       <div class="meta" style="font-size:14px">Aporta como: <b id="ap-quien" style="color:var(--ink)"></b></div>
       <label class="f">Fecha del hecho (si aplica)<input id="ap-fecha" type="date"></label>
@@ -226,7 +226,7 @@ function renderPortal(P){
   }
   q.addEventListener('input',draw);
   app.replaceChildren(
-    el('div',{class:'sec-h'},el('div',{class:'sec'},el('h1',{},'Casos'),el('div',{class:'meta'},'Casos a los que tienes acceso. Toca un caso para abrir su expediente.'),P.actualizado?el('div',{class:'meta',style:'font-size:13px'},'Actualizado: '+P.actualizado):null),el('button',{class:'btn no-print',onclick:pdf},'⬇ Descargar PDF')),
+    el('div',{class:'sec-h'},el('div',{class:'sec'},el('h1',{},'Casos'),el('div',{class:'meta'},'Casos a los que tiene acceso. Toque un caso para abrir su expediente.'),P.actualizado?el('div',{class:'meta',style:'font-size:13px'},'Actualizado: '+P.actualizado):null),el('button',{class:'btn no-print',onclick:pdf},'⬇ Descargar PDF')),
     stats,fil,el('div',{class:'bar'},q),list);
   draw();
 }
@@ -264,14 +264,14 @@ function renderCaso(C,back){
       i.resumen?el('p',{class:'resumen'},i.resumen):null,
       i.alerta?el('div',{class:'alerta'},el('b',{},'Ojo: '),i.alerta):null),
     el('section',{class:'sec'},el('h2',{},'Personas'),el('div',{class:'people'},...[...(C.personas||[])].sort((x,y)=>({informante:0,senalado:1,jefatura:2,testigo:3}[x.tipo]??9)-({informante:0,senalado:1,jefatura:2,testigo:3}[y.tipo]??9)).map(p=>el('button',{class:'card person',style:'--c:'+(ROLC[p.tipo]||'var(--gry)'),onclick:()=>showPersona(p)},el('span',{class:'rol'},p.rol),el('span',{class:'nom'},p.nombre),el('span',{class:'sub'},[p.cargo,p.empresa].filter(Boolean).join(' · ')),el('span',{class:'more'},'Ver ficha →'))))),
-    el('section',{class:'sec'},el('div',{class:'sec-h'},el('h2',{},'Línea de tiempo'),el('span',{class:'meta',style:'font-size:13px'},'Toca un hito para ver el detalle')),
+    el('section',{class:'sec'},el('div',{class:'sec-h'},el('h2',{},'Línea de tiempo'),el('span',{class:'meta',style:'font-size:13px'},'Toque un hito para ver el detalle')),
       el('div',{class:'card tl-wrap'},el('div',{class:'tl'},...ev.map(r=>{const c=(CATS[r.categoria]||CATS.relato).c;return el('button',{class:'ev',style:'--c:'+c,onclick:()=>showReg(r)},el('span',{class:'dot'}),el('span',{class:'fe'},fechaTxt(r)),el('span',{class:'ti'},r.titulo),(r.fotos||[]).length?el('span',{class:'meta',style:'font-size:11.5px'},'📷 '+r.fotos.length):null)}))),
       el('div',{class:'legend'},...Object.entries(CATS).filter(([k])=>used.includes(k)).map(([k,v])=>el('span',{style:'--c:'+v.c},el('i'),v.n)))),
     (C.vias||[]).length?el('section',{class:'sec'},el('h2',{},'Plan de acción'),el('div',{class:'cols'},...C.vias.map(v=>el('div',{class:'card via',style:'--c:'+v.color},el('h3',{},v.titulo),v.nota?el('p',{class:'hint'},v.nota):null,...chk(v.acciones||[],v.color))))):null,
     (C.pendientes||[]).length?el('section',{class:'sec'},el('h2',{},'Pendiente por confirmar'),el('div',{class:'card via',style:'--c:var(--amb)'},...chk(C.pendientes,'var(--amb)'))):null,
-    el('section',{class:'sec'},el('h2',{},'Evidencia'),fotos.length?el('div',{class:'gal'},...fotos):el('div',{class:'empty'},'Aún no hay fotos. Si tienes alguna, usa «Subir información».')),
+    el('section',{class:'sec'},el('h2',{},'Evidencia'),fotos.length?el('div',{class:'gal'},...fotos):el('div',{class:'empty'},'Aún no hay fotos. Si tiene alguna, use «Subir información».')),
     (C.flujo||[]).length?el('section',{class:'sec'},el('h2',{},C.flujoTitulo||'Próximos pasos'),el('div',{class:'flow'},...C.flujo.map(s=>el('div',{class:'fs'},el('b',{},s.paso),s.texto)))):null,
-    el('div',{class:'cta'},el('div',{},el('b',{style:'font-size:16px'},'¿Tienes información sobre este caso?'),el('div',{class:'meta'},'Relatos, fechas, testigos, fotos o documentos. Queda registrado con tu nombre.')),el('button',{class:'btn pri',onclick:()=>abrirSubir()},'⬆ Subir información'))
+    el('div',{class:'cta'},el('div',{},el('b',{style:'font-size:16px'},'¿Tiene información sobre este caso?'),el('div',{class:'meta'},'Relatos, fechas, testigos, fotos o documentos. Queda registrado con su nombre.')),el('button',{class:'btn pri',onclick:()=>abrirSubir()},'⬆ Subir información'))
   ].filter(Boolean));
   montarAportes(C,i);
   window.scrollTo(0,0);
@@ -313,7 +313,7 @@ function montarAportes(C,i){
         return el('div',{class:'ap'},el('div',{class:'who'},el('b',{},a.persona||'—'),el('span',{class:'when'},isNaN(d)?'':p(d.getDate())+'-'+p(d.getMonth()+1)+'-'+d.getFullYear()+' '+p(d.getHours())+':'+p(d.getMinutes()))),
           a.fechaHecho?el('div',{class:'meta',style:'font-size:12.5px'},'Fecha del hecho: '+fmt(a.fechaHecho)):null,
           a.texto?el('div',{class:'tx'},a.texto):null,
-          (a.archivos||[]).length?el('div',{class:'files'},...a.archivos.map(f=>archivo(f,a,A))):null)}):[el('div',{class:'meta',style:'font-size:13px'},'Aún no hay aportes. Usa «Subir información» para agregar el primero.')]));
+          (a.archivos||[]).length?el('div',{class:'files'},...a.archivos.map(f=>archivo(f,a,A))):null)}):[el('div',{class:'meta',style:'font-size:13px'},'Aún no hay aportes. Use «Subir información» para agregar el primero.')]));
     }catch(e){lista.replaceChildren(el('div',{class:'meta',style:'font-size:13px'},'No se pudieron cargar los aportes. Recarga la página.'))}
   }
   cargar();
@@ -321,7 +321,7 @@ function montarAportes(C,i){
     const texto=$('#ap-txt').value.trim();if(!texto&&!FILES.length){err.textContent='Escribe algo o agrega al menos un archivo.';return}
     ok.disabled=true;
     try{const archivos=[];let total=0;
-      for(let k=0;k<FILES.length;k++){ok.textContent='Preparando '+(k+1)+' de '+FILES.length+'…';const f=await achicar(FILES[k]);total+=f.size;if(total>40e6)throw new Error('Los archivos pesan demasiado (máx. 40 MB por envío). Sube menos a la vez.');archivos.push({nombre:f.name,tipo:f.type||'application/octet-stream',b64:await aB64(f)})}
+      for(let k=0;k<FILES.length;k++){ok.textContent='Preparando '+(k+1)+' de '+FILES.length+'…';const f=await achicar(FILES[k]);total+=f.size;if(total>40e6)throw new Error('Los archivos pesan demasiado (máx. 40 MB por envío). Suba menos a la vez.');archivos.push({nombre:f.name,tipo:f.type||'application/octet-stream',b64:await aB64(f)})}
       ok.textContent='Subiendo…';
       const r=await fetch(A.url,{method:'POST',body:JSON.stringify({t:A.t,caso:C.id||i.id||'',casoNombre:i.titulo,persona:USER.nombre,fechaHecho:$('#ap-fecha').value,texto,archivos})});
       const j=await r.json();if(!j.ok)throw new Error('No se pudo guardar. Intenta de nuevo.');
