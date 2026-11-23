@@ -266,4 +266,37 @@ async function entrar(){var m=document.getElementById("lm"),u=document.getElemen
  catch(e){m.textContent=e.message=="bloqueado"?"Demasiados intentos. Espere 15 minutos e intente de nuevo":e.message=="clave"?"Usuario o clave incorrectos":e.message=="sin-url"?"Falta conectar la nómina en línea":"No se pudo conectar. Revise su internet e intente de nuevo"}}
 document.getElementById("lb").onclick=entrar;document.getElementById("lc").onkeydown=function(e){if(e.key=="Enter")entrar()};
 (async function(){try{var u=localStorage.getItem("plaza_u"),c=localStorage.getItem("plaza_c");if(u&&c)await cargar(u,c)}catch(e){}})();
-</script></body></html>
+</script><script id="mejoraLogin">
+(function(){
+var KEY='plazaInvRecuerdo';
+function g(i){return document.getElementById(i);}
+function init(){
+var u=g('lu'),c=g('lc'),b=g('lb');
+if(!u||!c||!b)return;
+var w=document.createElement('div');w.style.cssText='position:relative;display:block';
+c.parentNode.insertBefore(w,c);w.appendChild(c);
+c.style.paddingRight='44px';
+var ojo=document.createElement('button');ojo.type='button';ojo.setAttribute('aria-label','Ver clave');
+ojo.style.cssText='position:absolute;right:6px;top:50%;transform:translateY(-50%);width:34px;height:34px;border:0;background:transparent;cursor:pointer;font-size:18px;line-height:1;padding:0;color:#555';
+ojo.textContent='\uD83D\uDC41';
+ojo.onclick=function(){var ver=c.type==='password';c.type=ver?'text':'password';ojo.textContent=ver?'\uD83D\uDE48':'\uD83D\uDC41';ojo.setAttribute('aria-label',ver?'Ocultar clave':'Ver clave');};
+w.appendChild(ojo);
+var lab=document.createElement('label');lab.style.cssText='display:flex;align-items:center;gap:8px;margin:12px 0 0;font-size:14px;font-weight:600;cursor:pointer';
+var ck=document.createElement('input');ck.type='checkbox';ck.style.cssText='width:18px;height:18px;margin:0';ck.checked=true;
+lab.appendChild(ck);lab.appendChild(document.createTextNode('Recordar mi ingreso'));
+w.parentNode.insertBefore(lab,w.nextSibling);
+var saved=null;try{saved=JSON.parse(localStorage.getItem(KEY)||'null');}catch(e){}
+if(saved&&saved.u&&saved.c){u.value=saved.u;c.value=saved.c;setTimeout(function(){if(b.offsetParent!==null)b.click();},300);}
+b.addEventListener('click',function(){
+var uu=u.value,cc=c.value;if(!uu||!cc)return;var n=0;
+var t=setInterval(function(){n++;
+if(b.offsetParent===null){clearInterval(t);try{if(ck.checked)localStorage.setItem(KEY,JSON.stringify({u:uu,c:cc}));else localStorage.removeItem(KEY);}catch(e){}}
+else if(n>40){clearInterval(t);}
+},300);
+},true);
+document.addEventListener('click',function(e){var x=e.target.closest&&e.target.closest('button');if(x&&/Cerrar sesi/i.test(x.textContent)){try{localStorage.removeItem(KEY);}catch(er){}}},true);
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+</script>
+</body></html>
