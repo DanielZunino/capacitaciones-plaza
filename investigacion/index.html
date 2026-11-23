@@ -257,7 +257,7 @@ document.getElementById("jin").onchange=function(e){var f=e.target.files[0];if(!
 ld();document.querySelectorAll("[data-k]").forEach(bind);fotos=S.fotos||[];render();
 
 async function cargar(u,c){if(!APPS_URL){document.getElementById("login").style.display="none";est("Nómina en línea aún no conectada: escriba los nombres a mano");return}
- var r=await fetch(APPS_URL+"?u="+encodeURIComponent(u)+"&c="+encodeURIComponent(c));var j=await r.json();
+ var r=await fetch(APPS_URL+"?usr="+encodeURIComponent(u)+"&clv="+encodeURIComponent(c));var j=await r.json();
  if(j.bloqueado)throw new Error("bloqueado");if(!j.ok)throw new Error("clave");NOM=j.n;nomInit();document.getElementById("login").style.display="none"}
 async function entrar(){var m=document.getElementById("lm"),u=document.getElementById("lu").value.trim().toLowerCase(),c=document.getElementById("lc").value.trim();
  m.textContent="";if(!u||!c){m.textContent="Escriba su usuario y su clave";return}
