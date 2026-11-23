@@ -20,7 +20,7 @@ h2{margin:0 0 6px;color:var(--azul);font-size:18px;border-left:5px solid var(--a
 .etq{display:inline-block;background:var(--mal);color:#fff;border-radius:4px;padding:2px 8px;font-size:12px;font-weight:700;margin-right:4px}
 .etq.ok{background:var(--ok)}
 label.c{display:block;font-size:13px;font-weight:700;color:var(--azul);margin:10px 0 4px}
-input[type=text],input[type=date],input[type=time],select,textarea{width:100%;font:inherit;font-size:15px;padding:9px;border:1px solid #b8c4d0;border-radius:6px;background:#fff}
+input[type=text],input[type=password],input[type=date],input[type=time],select,textarea{width:100%;font:inherit;font-size:15px;padding:9px;border:1px solid #b8c4d0;border-radius:6px;background:#fff}
 textarea{min-height:78px;resize:vertical}
 .fila{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
 .chk{display:flex;align-items:flex-start;gap:10px;padding:10px;border:1px solid #dde4ec;border-radius:8px;margin:6px 0;cursor:pointer;font-size:14px;line-height:1.35}
@@ -256,13 +256,13 @@ document.getElementById("jin").onchange=function(e){var f=e.target.files[0];if(!
  r.onload=function(){try{S=JSON.parse(r.result);sv();location.reload()}catch(x){alert("El archivo no es válido")}};r.readAsText(f)};
 ld();document.querySelectorAll("[data-k]").forEach(bind);fotos=S.fotos||[];render();
 
-async function cargar(u,c){if(!APPS_URL)throw new Error("sin-url");
+async function cargar(u,c){if(!APPS_URL){document.getElementById("login").style.display="none";est("Nómina en línea aún no conectada: escriba los nombres a mano");return}
  var r=await fetch(APPS_URL+"?u="+encodeURIComponent(u)+"&c="+encodeURIComponent(c));var j=await r.json();
  if(j.bloqueado)throw new Error("bloqueado");if(!j.ok)throw new Error("clave");NOM=j.n;nomInit();document.getElementById("login").style.display="none"}
 async function entrar(){var m=document.getElementById("lm"),u=document.getElementById("lu").value.trim().toLowerCase(),c=document.getElementById("lc").value.trim();
  m.textContent="";if(!u||!c){m.textContent="Escriba su usuario y su clave";return}
  m.textContent="Ingresando...";
- try{await cargar(u,c);try{localStorage.setItem("plaza_u",u);localStorage.setItem("plaza_c",c)}catch(e){}}
+ try{await cargar(u,c);if(APPS_URL){try{localStorage.setItem("plaza_u",u);localStorage.setItem("plaza_c",c)}catch(e){}}}
  catch(e){m.textContent=e.message=="bloqueado"?"Demasiados intentos. Espere 15 minutos e intente de nuevo":e.message=="clave"?"Usuario o clave incorrectos":e.message=="sin-url"?"Falta conectar la nómina en línea":"No se pudo conectar. Revise su internet e intente de nuevo"}}
 document.getElementById("lb").onclick=entrar;document.getElementById("lc").onkeydown=function(e){if(e.key=="Enter")entrar()};
 (async function(){try{var u=localStorage.getItem("plaza_u"),c=localStorage.getItem("plaza_c");if(u&&c)await cargar(u,c)}catch(e){}})();
